@@ -13,7 +13,7 @@ public class HotelDAO implements DatabaseCRUDable<Hotel>{
 	@Override
 	public ArrayList<Hotel> retrieve() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		String hql = "SELECT xxx FROM User AS xxx";  // <=== SQL'in aksine tablo adı değil okumak istediğimiz sınıf ismini yazıyoruz. Java sınıf adı yazım kurallarına uygun olmalı
+		String hql = "SELECT xxx FROM Hotel AS xxx";  // <=== SQL'in aksine tablo adı değil okumak istediğimiz sınıf ismini yazıyoruz. Java sınıf adı yazım kurallarına uygun olmalı
 		TypedQuery<Hotel> typedQuery = session.createQuery(hql, Hotel.class);
 		
 		ArrayList<Hotel> data = (ArrayList<Hotel>)typedQuery.getResultList();
@@ -24,7 +24,7 @@ public class HotelDAO implements DatabaseCRUDable<Hotel>{
 	public Hotel find(long oid) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		String hql = "SELECT xxx FROM User AS xxx WHERE xxx.oid =: key";  
+		String hql = "SELECT xxx FROM Hotel AS xxx WHERE xxx.oid =: key";  
 		TypedQuery<Hotel> typedQuery = session.createQuery(hql, Hotel.class);
 		typedQuery.setParameter("key", oid);
 		

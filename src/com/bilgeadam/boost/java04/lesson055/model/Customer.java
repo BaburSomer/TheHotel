@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -19,41 +18,41 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table(name = "rooms")
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString (exclude = {"hotel"})
-@NoArgsConstructor
-public class Room {
+@ToString
+@Entity
+@Table(name = "customers")
+public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long oid;
 	
-	@Column(name = "room_number", nullable = false, unique = true)
-	private int roomNumber;
+	@Column(name = "first_name", length = 50, nullable = false)
+	private String firstName;
 	
-	@Column(name = "number_of_beds", nullable = false)
-	private int numOfBeds;
-
-	@ManyToOne
-	@JoinColumn(name = "hotel_oid", nullable = false)
-	private Hotel hotel;
+	@Column(name = "last_name", length = 50, nullable = false)
+	private String lastName;
 	
-	@OneToMany(mappedBy = "room", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@Column(name = "id_number", nullable = false, unique = true)
+	private long idNumber;
+	
+	@OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Set<Booking> bookings;
 
-	public Room(int roomNumber, int numOfBeds, Hotel hotel) {
+	public Customer(String firstName, String lastName, long idNumber) {
 		super();
-		this.roomNumber = roomNumber;
-		this.numOfBeds = numOfBeds;
-		this.hotel = hotel;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.idNumber = idNumber;
 	}
-	
+
 	public void addBooking(Booking booking) {
 		if (this.bookings == null) {
 			this.bookings = new HashSet<>();
 		}
 		this.bookings.add(booking);
 	}
+
 }

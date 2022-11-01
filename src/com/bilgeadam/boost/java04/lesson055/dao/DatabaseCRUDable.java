@@ -19,6 +19,7 @@ public interface DatabaseCRUDable<T> {
 			CommonData.getInstance().info("Veri eklendi: " + entity.toString());
 		} catch (Exception e) {
 			CommonData.getInstance().error("Veri eklerken hata oluştu: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

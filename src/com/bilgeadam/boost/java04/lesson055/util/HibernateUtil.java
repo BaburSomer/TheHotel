@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 
 public class HibernateUtil {
@@ -32,9 +33,9 @@ public class HibernateUtil {
 
 	@SuppressWarnings("rawtypes")
 	private static Configuration registerEntityFiles(Configuration config) {
-		String rootDirectoryName = CommonData.getInstance().getEntityFilesLocation();
+		final String rootDirectoryName = CommonData.getInstance().getEntityFilesLocation();
 		
-		File rootDir = new File(rootDirectoryName);
+		final File rootDir = new File(rootDirectoryName);
 		if (rootDir.isDirectory()) {
 			String[] files = rootDir.list();
 			for (String fileName : files) {
@@ -45,6 +46,10 @@ public class HibernateUtil {
 					entityClass = Class.forName(CommonData.getInstance().getEntityPackageName() + "." + fileName);
 					if (isHibernateEntity(entityClass.getAnnotations())) {
 						config.addAnnotatedClass(entityClass);
+						CommonData.getInstance().info(fileName + " is added as an entity");
+					}
+					else {
+						CommonData.getInstance().warning(fileName + " is not an entity and not added to hibernate configuration");
 					}
 				} catch (ClassNotFoundException e) {
 					CommonData.getInstance().error("Error while reflecting " + fileName + " class: " + e.getMessage());
@@ -60,7 +65,7 @@ public class HibernateUtil {
 
 	private static boolean isHibernateEntity(Annotation[] annotations) {
 		for (Annotation annotation : annotations) {
-			if (annotation instanceof Entity) return true;
+			if (annotation instanceof Entity || annotation instanceof Embeddable) return true;
 		}
 		return false;
 	}

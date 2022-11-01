@@ -60,13 +60,15 @@ public class CommonData {
 		if (this.logger == null) {
 			this.logger = Logger.getLogger("My beautifull Logger");
 			for (Handler handler : logger.getHandlers()) {
-				handler.setLevel(Level.SEVERE);
+				handler.setLevel(Level.parse(this.getProperties().getProperty("logger.level")));
 			}
+			
 			try {
 				String logFileName = this.getProperties().getProperty("logger.fileName");
-				FileHandler logFileHandler = new FileHandler(logFileName, false);
+				FileHandler logFileHandler = new FileHandler(logFileName, 
+						Boolean.parseBoolean(this.getProperties().getProperty("logger.createNewEachTime")));
 				logFileHandler.setFormatter(new SimpleFormatter());
-				logFileHandler.setLevel(Level.ALL);
+				logFileHandler.setLevel(Level.parse(this.getProperties().getProperty("logger.level")));
 				logger.addHandler(logFileHandler);
 			} catch (Exception e) {
 				System.err.println("Logger yaratılamadı: " + e.getMessage());
