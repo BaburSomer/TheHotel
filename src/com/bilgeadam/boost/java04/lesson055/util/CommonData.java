@@ -3,17 +3,27 @@ package com.bilgeadam.boost.java04.lesson055.util;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import com.bilgeadam.boost.java04.lesson055.controller.CustomerController;
+import com.bilgeadam.boost.java04.lesson055.controller.HotelController;
+import com.bilgeadam.boost.java04.lesson055.controller.RoomController;
+
 public class CommonData {
 	private static final CommonData instance = new CommonData();
 	private Properties props;
 	private String propertiesFile;
 	private Logger logger;
+	private Scanner sc;
+	private RoomController  roomController;
+	private HotelController hotelController;
+	private CustomerController customerController;
+
 
 	private CommonData() {
 		super();
@@ -21,6 +31,13 @@ public class CommonData {
 
 	public static CommonData getInstance() {
 		return CommonData.instance;
+	}
+
+	public Scanner getScanner() {
+		if (this.sc == null) {
+			this.sc = new Scanner(System.in);
+		}
+		return this.sc;
 	}
 
 	private Properties getProperties() {
@@ -55,7 +72,7 @@ public class CommonData {
 	public String getEntityPackageName() {
 		return this.getProperties().getProperty("hibernate.entity.packageName");
 	}
-	
+
 	private Logger getLogger() {
 		if (this.logger == null) {
 			this.logger = Logger.getLogger("My beautifull Logger");
@@ -66,7 +83,7 @@ public class CommonData {
 			try {
 				String logFileName = this.getProperties().getProperty("logger.fileName");
 				FileHandler logFileHandler = new FileHandler(logFileName, 
-						Boolean.parseBoolean(this.getProperties().getProperty("logger.createNewEachTime")));
+						Boolean.parseBoolean(this.getProperties().getProperty("logger.appendMode")));
 				logFileHandler.setFormatter(new SimpleFormatter());
 				logFileHandler.setLevel(Level.parse(this.getProperties().getProperty("logger.level")));
 				logger.addHandler(logFileHandler);
@@ -93,5 +110,26 @@ public class CommonData {
 
 	public void error(String message) {
 		this.getLogger().severe("\t---> " + message);
+	}
+
+	public RoomController getRoomController() {
+		if (this.roomController == null) {
+			this.roomController = new RoomController();
+		}
+		return roomController;
+	}
+
+	public HotelController getHotelController() {
+		if (this.hotelController == null) {
+			this.hotelController = new HotelController();
+		}
+		return hotelController;
+	}
+
+	public CustomerController getCustomerController() {
+		if (this.customerController == null) {
+			this.customerController = new CustomerController();
+		}
+		return customerController;
 	}
 }

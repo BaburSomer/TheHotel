@@ -55,4 +55,8 @@ public class Customer {
 		this.bookings.add(booking);
 	}
 
+	public String getFullName() {
+		return this.firstName + " " + this.lastName;
+	}
+
 }

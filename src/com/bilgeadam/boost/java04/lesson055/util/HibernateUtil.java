@@ -3,7 +3,6 @@ package com.bilgeadam.boost.java04.lesson055.util;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -26,9 +25,7 @@ public class HibernateUtil {
 		
 		config = registerEntityFiles(config);
 		
-		SessionFactory factory = config.configure(CommonData.getInstance().getHibernateConfigFileName()).buildSessionFactory();
-		
-		return factory;
+		return config.configure(CommonData.getInstance().getHibernateConfigFileName()).buildSessionFactory();
 	}
 
 	@SuppressWarnings("rawtypes")
